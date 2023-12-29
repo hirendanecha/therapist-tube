@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-community-modal.component.scss'],
 })
 export class AddCommunityModalComponent implements OnInit, AfterViewInit {
-  @Input() title: string | undefined = 'Apply to be Health Practitioner';
+  @Input() title: string | undefined = 'Apply to be Therapists';
   @Input() cancelButtonLabel: string | undefined = 'Cancel';
   @Input() confirmButtonLabel: string | undefined = 'Create';
   @Input() closeIcon: boolean | undefined;
@@ -38,7 +38,7 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   selectedFile: File;
   userId = '';
   profileId = '';
-  originUrl = environment.webUrl + 'health-practitioner/';
+  originUrl = environment.webUrl + 'therapists/';
   logoImg: any = {
     file: null,
     url: '',
@@ -182,15 +182,15 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
               this.submitted = true;
               this.createCommunityAdmin(res.data);
               this.toastService.success(
-                'Your Health Practitioner will be approved within 24 hours!'
+                'Your Therapists will be approved within 24 hours!'
               );
               this.activeModal.close('success');
-              this.router.navigate(['/health-practitioner']);
+              this.router.navigate(['/therapists']);
             }
           },
           error: (err) => {
             this.toastService.danger(
-              'Please change practitioner. this practitioner name already in use.'
+              'Please change therapists. this therapists name already in use.'
             );
             this.spinner.hide();
           },
@@ -210,14 +210,14 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
               this.submitted = true;
               // this.createCommunityAdmin(res.data);
               this.toastService.success(
-                'Your Health Practitioner edit successfully!'
+                'Your Therapists edit successfully!'
               );
               this.activeModal.close('success');
             }
           },
           error: (err) => {
             this.toastService.danger(
-              'Please change Health Practitioner. this Health Practitioner name already in use.'
+              'Please change Therapists. this Therapists name already in use.'
             );
             this.spinner.hide();
           },
@@ -348,6 +348,6 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   }
 
   clearForm(){
-    this.router.navigate(['/health-practitioner'])
+    this.router.navigate(['/therapists'])
   }
 }

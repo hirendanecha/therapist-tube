@@ -37,7 +37,7 @@ export class CommunitiesComponent {
     }
     // this.getCommunities();
     const data = {
-      title: 'HealingTube Health Practitioner',
+      title: 'TherapistTube Therapists',
       url: `${window.location.href}`,
       description: '',
     };
@@ -95,7 +95,7 @@ export class CommunitiesComponent {
 
 
   createCommunity() {
-    this.router.navigate(['health-practitioner/add-practitioner'])
+    this.router.navigate(['therapists/add-therapists'])
   }
   // createCommunity() {
   //   const modalRef = this.modalService.open(AddCommunityModalComponent, {

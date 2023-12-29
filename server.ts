@@ -86,15 +86,15 @@ export function app(): express.Express {
         var seo: any = {
           title: 'Therapist Tube',
           description:
-            'Private video consultations with Naturopathic Doctors and Holistic Healers from around the world. Social Discussion on how to heal various ailments.',
+            'Speak with Therapists locally or worldwide Optionally speak to people around the world about various topics',
           image:
-            'https://therapist.tube/assets/images/Ht-Profile-pic-default.png',
+            'https://therapist.tube/assets/images/profile-cover.jpg',
           site: 'https://therapist.tube/',
           url: 'https://therapist.tube' + params,
           keywords: 'TherapistTube',
         };
         if (
-          params.indexOf('communities/') > -1 ||
+          params.indexOf('therapists/') > -1 ||
           params.indexOf('pages/') > -1
         ) {
           let id = params.split('/');
@@ -153,9 +153,9 @@ export function app(): express.Express {
           const pdhtml = document.createElement('div');
           pdhtml.innerHTML = post?.postdescription || post?.metadescription;
           const talent = {
-            name: post?.title || post?.albumname || 'Healing.Tube Post',
+            name: post?.title || post?.albumname || 'Therapist Tube Post',
             description: pdhtml?.textContent || 'Post content',
-            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://www.healing.tube/assets/images/Ht-Profile-pic-default.png',
+            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://www.therapist.tube/assets/images/profile-cover.jpg',
           };
           seo.title = talent.name;
           seo.description = strip_html_tags(talent.description);
@@ -170,7 +170,7 @@ export function app(): express.Express {
 
           console.log('group===>', group);
           const talent = {
-            name: `HealingTube Research ${group?.PageTitle}`,
+            name: `TherapistTube Research ${group?.PageTitle}`,
             description: group?.PageDescription,
             image: group?.CoverPicName || group?.ProfilePicName
           };
