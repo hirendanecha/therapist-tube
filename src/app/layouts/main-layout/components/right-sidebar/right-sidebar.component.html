@@ -96,10 +96,10 @@
     <div
       class="d-flex justify-content-between align-items-center w-100 mb-3 pt-5"
     >
-      <h6 class="d-inline-flex mb-0">My Health Practitioner</h6>
+      <h6 class="d-inline-flex mb-0">My Therapists</h6>
 
       <a
-        routerLink="health-practitioner"
+        routerLink="therapists"
         role="button"
         class="d-flex align-items-center"
         (click)="closeSidebar()"
@@ -127,9 +127,9 @@
               class="w-48-px h-48-px rounded-3 bg-dark"
               data-src="{{
                 community?.logoImg ||
-                  '/assets/images/avtar/placeholder-user.png'
+                  '/assets/images/avtar/placeholder-user.jpg'
               }}"
-              onerror="this.onerror=null;this.src='/assets/images/avtar/placeholder-user.png';"
+              onerror="this.onerror=null;this.src='/assets/images/avtar/placeholder-user.jpg';"
               alt="avatar"
             />
 

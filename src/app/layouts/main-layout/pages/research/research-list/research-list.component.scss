@@ -18,7 +18,7 @@
   }
   ::ng-deep {
     .mobile-research-card {
-      h6{
+      h6 {
         font-weight: 600;
       }
       @media (max-width: 576px) {
@@ -29,12 +29,12 @@
       .carousel-inner {
         border-radius: var(--bs-border-radius);
       }
-  
+
       .carousel-control-prev,
       .carousel-control-next {
         width: 32px;
         opacity: 1;
-  
+
         span {
           background-color: var(--bs-primary);
           border-radius: 10px;
@@ -43,24 +43,25 @@
           height: 32px;
         }
       }
-  
+
       .carousel-control-prev {
         left: -36px;
       }
-  
+
       .carousel-control-next {
         right: -36px;
       }
     }
-  
+
     .btn-check:checked + .btn,
     :not(.btn-check) + .btn:active,
     .btn:first-child:active,
     .btn.active,
     .btn.show {
       color: white !important;
+      background-color: var(--primary-color);
     }
-  
+
     @media (max-width: 990px) {
       .carousel {
         .carousel-control-prev,
@@ -77,11 +78,9 @@
     .tag-input-div {
       max-width: 615px !important;
       width: 100% !important;
-
     }
   }
 }
-
 
 .custom-input-area {
   width: 100%;

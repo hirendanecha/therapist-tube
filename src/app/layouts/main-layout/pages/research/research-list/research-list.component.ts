@@ -63,7 +63,7 @@ export class ResearchListComponent {
     private seoService: SeoService
   ) {
     const data = {
-      title: 'HealingTube Research',
+      title: 'TherapistTube Research',
       url: `${window.location.href}`,
       description: '',
     };
