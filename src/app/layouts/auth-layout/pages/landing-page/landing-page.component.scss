@@ -17,11 +17,11 @@
 
   .custom-height {
     background-image: url(/assets/images/landingpage/therapist-hm-pg.png);
-    background-size: cover;
+    background-size: 100% 100%;
+    background-position: center center;
     background-repeat: no-repeat;
     object-fit: cover;
     height: calc(100vh - 48px);
-    min-height: 400px;
 
     .banner-text {
       max-width: 600px;
@@ -41,8 +41,12 @@
       }
     }
 
-    @media (max-width: 600px) {
-      min-height: 300px;
+    @media (max-width: 950px) {
+      .banner-text {
+        position: absolute;
+        bottom: 10px;
+        max-width: 365px;
+      }
     }
   }
   .sub-container {
@@ -305,6 +309,6 @@
 }
 ::ng-deep.c-button-landing {
   svg path {
-    fill: #000428;
+    fill: var(--primary-color);
   }
 }
