@@ -112,7 +112,7 @@
         <ng-container *ngIf="pdfName">
           <div class="position-relative w-100-px h-100-px mt-5">
             <fa-icon [icon]="['fas', 'file-pdf']" class="c-pointer close-icon font-40-px" />
-            <span class="c-pdf-show">{{ pdfName.replaceAll('%', ' ') }}</span>
+            <span class="c-pdf-show">{{ pdfName.replaceAll("%", " ") }}</span>
             <fa-icon [icon]="['fas', 'xmark']"
               class="position-absolute top-0 translate-middle badge bg-danger p-1 font-12-px c-pointer c-icon-color"
               role="button" (click)="removePostSelectedFile()" />
@@ -160,7 +160,9 @@
             />
             <span>Fallings/Activity</span>
           </li> -->
-          <div class="d-none d-sm-flex btn-area gap-3 w-100 d-flex justify-content-end">
+          <div 
+            class="d-none d-sm-flex btn-area gap-3 w-100 d-flex justify-content-end"
+          >
             <button class="btn btn-sm btn-secondary px-3 py-1 d-flex justify-content-center align-items-center gap-2"
               *ngIf="
                 postData?.postdescription ||
@@ -177,7 +179,7 @@
                 !(postData?.postdescription || postData?.file?.name) ||
                 buttonClicked
               " (click)="uploadPostFileAndCreatePost()">
-              {{ postData?.id ? "Update Post" : "Post" }}
+              {{ "Post" }}
 
               <fa-icon class="c-icon-color" [icon]="['fas', 'paper-plane']" />
             </button>
