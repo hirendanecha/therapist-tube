@@ -24,6 +24,7 @@ export class ReplyCommentModalComponent implements AfterViewInit {
 
   commentMessageInputValue: string = ''
   commentMessageTags: any[];
+  selectedImage = ''
 
   constructor(public activeModal: NgbActiveModal,
     private toastService: ToastService,
@@ -54,7 +55,7 @@ export class ReplyCommentModalComponent implements AfterViewInit {
     const file = event.target?.files?.[0] || {};
     if (file.type.includes('image/')) {
       this.commentData['file'] = file;
-      this.commentData['imageUrl'] = URL.createObjectURL(file);
+      this.selectedImage = URL.createObjectURL(file);
     }
     else {
       this.toastService.danger(`sorry ${file.type} are not allowed!`)
@@ -68,6 +69,7 @@ export class ReplyCommentModalComponent implements AfterViewInit {
   removePostSelectedFile(): void {
     this.commentData['file'] = null;
     this.commentData['imageUrl'] = '';
+    this.selectedImage = '';
   }
 
   onChangeComment(): void {
