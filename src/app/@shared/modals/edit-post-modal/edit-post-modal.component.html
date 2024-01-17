@@ -17,12 +17,12 @@
         loading="lazy"
         class="w-40-px h-40-px rounded-3"
         data-src="{{ data?.ProfilePicName }}"
-        onerror="this.onerror=null;this.src='/assets/images/avtar/placeholder-user.jpg';"
+        onerror="this.onerror=null;this.src='/assets/images/avtar/placeholder-user.png';"
         alt="avatar"
       />
     </div>
-    <div class="px-3 gap-2 w-100 ms-2">
-      <div class="d-flex">
+    <div class="px-3 gap-2 align-items-center w-100 ms-2">
+      <div class="d-flex align-items-center position-relative">
         <!-- <input
           placeholder="Reply..."
           class="outline-0 w-100 comment-input c-text"
@@ -35,15 +35,15 @@
           class="outline-0 w-100 comment-input c-text"
         ></div> -->
         <app-tag-user-input
-        class="edit-comment-emoji"
-          placeholder="Comment"
-          [value]="commentMessageInputValue"
+          class="edit-comment-emoji"
+          placeholder="Post a link or image or file or let's just talk!"
+          [value]="postInputValue"
           [isShowEmojis]="true"
           (onDataChange)="onTagUserInputChangeEvent($event)"
         />
-        <div class="file-input d-flex gap-1 gap-md-2 ms-2">
-          <div class="file-upload d-flex">
-            <label class="file">
+        <div class="file-input ms-2">
+          <div class="file-upload">
+            <label class="file" *ngIf="!(postData?.pdfUrl || pdfName)">
               <input
                 type="file"
                 accept="image/*"
@@ -59,20 +59,53 @@
                 />
               </span>
             </label>
+            <label
+              class="d-flex gap-2 align-items-center"
+              (click)="pdfFile.click()"
+              *ngIf="!(postData?.imageUrl || selectedImage)"
+            >
+              <!-- ngbTooltip="Comming Soon!"
+              placement="bottom" -->
+              <input
+                type="file"
+                #pdfFile
+                hidden
+                class="d-none"
+                accept="application/pdf"
+                (change)="onPostFileSelect($event)"
+                [disabled]="postData?.meta?.metaimage"
+              />
+              <fa-icon [icon]="['fas', 'file']" class="font-20-px" />
+            </label>
           </div>
         </div>
       </div>
-      <ng-container *ngIf="commentData?.imageUrl || selectedImage">
+      <ng-container *ngIf="postData?.imageUrl || selectedImage">
         <div class="position-relative w-52-px h-52-px mb-2 mt-2">
           <img
             loading="lazy"
-            data-src="{{ commentData?.imageUrl || selectedImage }}"
+            data-src="{{ postData?.imageUrl || selectedImage }}"
             class="w-100 h-100 rounded-4"
             alt="icon"
           />
           <fa-icon
             [icon]="['fas', 'xmark']"
             class="position-absolute top-0 start-100 translate-middle badge bg-danger p-1 font-12-px c-pointer text-white"
+            (click)="removePostSelectedFile()"
+          />
+        </div>
+      </ng-container>
+      <ng-container *ngIf="pdfName">
+        <div class="position-relative w-100-px h-100-px mt-5">
+          <fa-icon
+            [icon]="['fas', 'file-pdf']"
+            class="c-pointer close-icon font-40-px"
+          />
+          <span class="c-pdf-show">{{ pdfName.replaceAll("%", " ") }}</span>
+          <fa-icon
+            [icon]="['fas', 'xmark']"
+            class="position-absolute top-0 translate-middle badge bg-danger p-1 font-12-px c-pointer c-icon-color"
+            role="button"
             (click)="removePostSelectedFile()"
           />
         </div>

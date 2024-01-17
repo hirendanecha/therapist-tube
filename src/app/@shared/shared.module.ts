@@ -104,6 +104,7 @@ import { PostDetailComponent } from '../layouts/main-layout/pages/home/post-deta
 import { EditResearchModalComponent } from './modals/edit-research-modal/edit-research-modal.component';
 import { SharePostModalComponent } from './modals/share-post-modal/share-post-modal.component';
 import { RePostCardComponent } from './components/re-post-card/re-post-card.component';
+import { EditPostModalComponent } from './modals/edit-post-modal/edit-post-modal.component';
 import { HealthPraatitionerCardComponent } from './components/health-partitioner-card/health-partitioner-card.component';
 
 const sharedComponents = [
@@ -128,6 +129,7 @@ const sharedComponents = [
   EditResearchModalComponent,
   SharePostModalComponent,
   RePostCardComponent,
+  EditPostModalComponent,
   HealthPraatitionerCardComponent,
 ];
 
