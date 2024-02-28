@@ -49,10 +49,10 @@ export class SharedService {
   getUserDetails() {
     const profileId = localStorage.getItem('profileId');
     if (profileId) {
-      const localUserData = JSON.parse(localStorage.getItem('userData'));
-      if (localUserData?.Id) {
-        this.userData = localUserData;
-      }
+      // const localUserData = JSON.parse(localStorage.getItem('userData'));
+      // if (localUserData?.Id) {
+      //   this.userData = localUserData;
+      // }
 
       this.spinner.show();
 
@@ -63,7 +63,7 @@ export class SharedService {
 
           if (data) {
             this.userData = data;
-            localStorage.setItem('userData', JSON.stringify(this.userData));
+            // localStorage.setItem('userData', JSON.stringify(this.userData));
           }
         },
         error: (error) => {
