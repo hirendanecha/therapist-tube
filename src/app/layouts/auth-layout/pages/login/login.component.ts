@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,8 @@ import { environment } from 'src/environments/environment';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
 import { SocketService } from 'src/app/@shared/services/socket.service';
+
+declare var turnstile: any;
 
 @Component({
   selector: 'app-login',
@@ -30,6 +32,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loginMessage = '';
   msg = '';
   type = 'danger';
+  theme = '';
+  captchaToken = '';
+  @ViewChild('captcha', { static: false }) captchaElement: ElementRef;
 
   constructor(
     private modalService: NgbModal,
@@ -56,6 +61,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.msg = 'Account activated';
       this.type = 'success';
     }
+    this.theme = localStorage.getItem('theme');
     const data = {
       title: 'TherapistTube login',
       url: `${environment.webUrl}login`,
@@ -78,10 +84,34 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.loadCloudFlareWidget();
+  }
+
+  loadCloudFlareWidget() {
+    turnstile?.render(this.captchaElement.nativeElement, {
+      sitekey: environment.siteKey,
+      theme: this.theme === 'dark' ? 'light' : 'dark',
+      callback: function (token) {
+        localStorage.setItem('captcha-token', token);
+        this.captchaToken = token;
+        console.log(`Challenge Success ${token}`);
+        if (!token) {
+          this.msg = 'invalid captcha kindly try again!';
+          this.type = 'danger';
+        }
+      },
+    });
   }
 
   onSubmit(): void {
     this.spinner.show();
+    const token = localStorage.getItem('captcha-token');
+    if (!token) {
+      this.spinner.hide();
+      this.msg = 'Invalid captcha kindly try again!';
+      this.type = 'danger';
+      return;
+    }
     this.authService.customerlogin(this.loginForm.value).subscribe({
       next: (data: any) => {
         this.spinner.hide();

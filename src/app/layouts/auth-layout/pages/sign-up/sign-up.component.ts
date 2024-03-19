@@ -15,6 +15,9 @@ import { SeoService } from 'src/app/@shared/services/seo.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { UploadFilesService } from 'src/app/@shared/services/upload-files.service';
 import { environment } from 'src/environments/environment';
+
+declare var turnstile: any;
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -37,7 +40,9 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     file: null,
     url: '',
   };
-
+  theme = '';
+  captchaToken = '';
+  @ViewChild('captcha', { static: false }) captchaElement: ElementRef;
   @ViewChild('zipCode') zipCode: ElementRef;
 
   registerForm = new FormGroup({
@@ -72,6 +77,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       image: `${environment.webUrl}assets/images/landingpage/Healing-Tube-Logo.png`,
     };
     // this.seoService.updateSeoMetaData(data);
+    this.theme = localStorage.getItem('theme');
   }
 
   ngOnInit(): void {
@@ -79,18 +85,35 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.zipCode.nativeElement, 'input')
-      .pipe(debounceTime(1000))
-      .subscribe((event) => {
-        const val = event['target'].value;
-        if (val.length > 3) {
-          // this.onZipChange(val);
-        }
-      });
+    this.loadCloudFlareWidget();
+    // fromEvent(this.zipCode.nativeElement, 'input')
+    //   .pipe(debounceTime(1000))
+    //   .subscribe((event) => {
+    //     const val = event['target'].value;
+    //     if (val.length > 3) {
+    //       // this.onZipChange(val);
+    //     }
+    //   });
   }
 
   selectFiles(event) {
     this.profileImg = event;
+  }
+
+  loadCloudFlareWidget() {
+    turnstile?.render(this.captchaElement.nativeElement, {
+      sitekey: environment.siteKey,
+      theme: this.theme === 'dark' ? 'light' : 'dark',
+      callback: function (token) {
+        localStorage.setItem('captcha-token', token);
+        this.captchaToken = token;
+        console.log(`Challenge Success ${token}`);
+        if (!token) {
+          this.msg = 'invalid captcha kindly try again!';
+          this.type = 'danger';
+        }
+      },
+    });
   }
 
   upload(file: any = {}) {
@@ -128,7 +151,14 @@ export class SignUpComponent implements OnInit, AfterViewInit {
 
   save() {
     this.spinner.show();
-
+    const token = localStorage.getItem('captcha-token');
+    if (!token) {
+      this.spinner.hide();
+      this.msg = 'Invalid captcha kindly try again!';
+      this.type = 'danger';
+      this.scrollTop();
+      return;
+    }
     this.customerService.createCustomer(this.registerForm.value).subscribe({
       next: (data: any) => {
         this.spinner.hide();
