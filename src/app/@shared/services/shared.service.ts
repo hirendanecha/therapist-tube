@@ -80,7 +80,11 @@ export class SharedService {
 
   getNotificationList() {
     const id = localStorage.getItem('profileId');
-    this.customerService.getNotificationList(Number(id)).subscribe({
+    const data = {
+      page: 1,
+      size: 20,
+    };
+    this.customerService.getNotificationList(Number(id), data).subscribe({  
       next: (res: any) => {
         this.isNotify = false;
         this.notificationList = res?.data;
