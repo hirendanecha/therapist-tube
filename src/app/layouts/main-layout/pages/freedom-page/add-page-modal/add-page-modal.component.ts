@@ -97,7 +97,7 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
       console.log(this.data);
     }
   }
-
+  
   ngAfterViewInit(): void {
     this.inputLinkValue1 = this.data?.link1 || null;
     this.inputLinkValue2 = this.data?.link2 || null;
