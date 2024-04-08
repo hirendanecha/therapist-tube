@@ -159,6 +159,34 @@
         />
       </div>
     </div>
+    <div class="row advertizement-link">
+      <div class="col-md-6">
+        <label class="form-label d-flex">Advertizement Link 1</label>
+        <app-tag-user-input
+          class=""
+          placeholder="Put a link for advertizement!"
+          [value]="inputLinkValue1"
+          [isShowMetaLoader]="false"
+          (onDataChange)="onTagUserInputChangeEvent($event)"
+          [isShowMetaLoader]="false"
+          [isShowMetaPreview]="true"
+          [isAllowTagUser]="false"
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label d-flex">Advertizement Link 2</label>
+        <app-tag-user-input
+          class=""
+          placeholder="Put a link for advertizement!"
+          [value]="inputLinkValue2"
+          [isShowMetaLoader]="false"
+          (onDataChange)="onTagUserInputChangeEvent1($event)"
+          [isShowMetaLoader]="false"
+          [isShowMetaPreview]="true"
+          [isAllowTagUser]="false"
+        />
+      </div>
+    </div>
   </form>
 </div>
 
