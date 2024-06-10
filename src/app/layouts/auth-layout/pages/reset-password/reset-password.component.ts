@@ -20,6 +20,7 @@ export class ResetPasswordComponent {
   msg = '';
   type = '';
   userAccessToken: any;
+  passwordHidden: boolean = true;
   constructor(
     private modalService: NgbModal,
     private router: Router,
@@ -36,6 +37,10 @@ export class ResetPasswordComponent {
     this.spinner.hide();
   }
 
+  togglePasswordVisibility(passwordInput: HTMLInputElement) {
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    this.passwordHidden = !this.passwordHidden;
+  }
   mustMatch() {
     if (
       this.changePassword.form.controls['newPassword'].value !== '' &&
@@ -55,8 +60,8 @@ export class ResetPasswordComponent {
   }
 
   validatepassword(): boolean {
-    const pattern =
-      '[a-zA-Z0-9]{5,}';
+    const pattern = /^.{5,}$/;
+
     // const pattern =
     //   '(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[a-z])(?=.*[0-9].*[0-9]).{8}';
 
@@ -98,7 +103,7 @@ export class ResetPasswordComponent {
         error: (error) => {
           this.loading = false;
           this.submitted = false;
-          this.msg = 'Something went wrong please try again.';
+          this.msg = 'You have entered the wrong password or username.';
           this.type = 'danger';
         },
       });

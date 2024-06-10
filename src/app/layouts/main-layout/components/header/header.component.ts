@@ -54,13 +54,15 @@ export class HeaderComponent {
     private socketService: SocketService
   ) {
     this.originalFavicon = document.querySelector('link[rel="icon"]');
-    this.socketService.socket.on('isReadNotification_ack', (data) => {
-      if (data?.profileId) {
-        this.sharedService.isNotify = false;
-        localStorage.setItem('isRead', data?.isRead);
-        this.originalFavicon.href = '/assets/images/default-profile.jpg';
-      }
-    });
+    if (this.tokenService.getToken()) {      
+      this.socketService.socket.on('isReadNotification_ack', (data) => {
+        if (data?.profileId) {
+          this.sharedService.isNotify = false;
+          localStorage.setItem('isRead', data?.isRead);
+          this.originalFavicon.href = '/assets/images/default-profile.jpg';
+        }
+      });
+    }
     const isRead = localStorage.getItem('isRead');
     if (isRead === 'N') {
       this.sharedService.isNotify = true;
@@ -91,10 +93,14 @@ export class HeaderComponent {
   }
 
   openProfileMobileMenuModal(): void {
+    if(this.tokenService.getCredentials()){
     this.offcanvasService.open(ProfileMenusModalComponent, {
       position: 'start',
       panelClass: 'w-300-px',
     });
+  }else{
+    this.openRightSidebar();
+  }
   }
 
   openNotificationsMobileModal(): void {

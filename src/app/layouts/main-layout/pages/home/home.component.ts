@@ -206,6 +206,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           this.spinner.hide();
           if (res?.Id) {
             const details = res;
+            if (res.pageType === 'page') {
+              this.sharedService.getAdvertizeMentLink(res?.Id);
+            } else {
+              this.sharedService.advertizementLink = null;
+            }
             const data = {
               title: details?.CommunityName,
               url: `${environment.webUrl}${details?.pageType}/${details?.slug}`,
@@ -419,6 +424,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     modalRef.componentInstance.cancelButtonLabel = 'Cancel';
     modalRef.componentInstance.confirmButtonLabel = 'Save';
     modalRef.componentInstance.closeIcon = true;
+    data.link1 = this.sharedService?.advertizementLink[0]?.url;
+    data.link2 = this.sharedService?.advertizementLink[1]?.url;
     modalRef.componentInstance.data = data;
     modalRef.result.then((res) => {
       if (res === 'success') {
@@ -478,6 +485,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
               if (res) {
                 this.toastService.success(res.message);
                 this.getCommunityDetailsBySlug();
+                if (this.buttonClicked) {
+                  this.buttonClicked = false;
+                }
               }
             },
             error: (error) => {

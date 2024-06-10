@@ -43,6 +43,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     url: '',
   };
   theme = '';
+  passwordHidden: boolean = true;
   captchaToken = '';
   @ViewChild('captcha', { static: false }) captchaElement: ElementRef;
   @ViewChild('zipCode') zipCode: ElementRef;
@@ -96,6 +97,11 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     //       // this.onZipChange(val);
     //     }
     //   });
+  }
+  
+  togglePasswordVisibility(passwordInput: HTMLInputElement) {
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    this.passwordHidden = !this.passwordHidden;
   }
 
   selectFiles(event) {
@@ -154,13 +160,13 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   save() {
     this.spinner.show();
     const token = localStorage.getItem('captcha-token');
-    if (!token) {
-      this.spinner.hide();
-      this.msg = 'Invalid captcha kindly try again!';
-      this.type = 'danger';
-      this.scrollTop();
-      return;
-    }
+    // if (!token) {
+    //   this.spinner.hide();
+    //   this.msg = 'Invalid captcha kindly try again!';
+    //   this.type = 'danger';
+    //   this.scrollTop();
+    //   return;
+    // }
     this.customerService.createCustomer(this.registerForm.value).subscribe({
       next: (data: any) => {
         this.spinner.hide();

@@ -94,7 +94,7 @@ export class CommunityService {
   }
 
   getCommunityBySlug(slug: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/bySlug/${slug}`);
+    return this.http.get(`${this.baseUrl}/bySlug/${slug}?q=${Date.now()}`);
   }
 
   deleteCommunity(id): Observable<any> {
@@ -112,5 +112,17 @@ export class CommunityService {
   
   getAllCommunities(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/get-communities`, data)
+  }
+  
+  createAdvertizeMentLink(data): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create-advertizement-link`, data);
+  }
+
+  editAdvertizeMentLink(data): Observable<any> {
+    return this.http.post(`${this.baseUrl}/edit-advertizement-link`, data);
+  }
+
+  getLinkById(id): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get-link/${id}&q=${Date.now()}`);
   }
 }

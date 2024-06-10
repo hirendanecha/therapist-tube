@@ -103,6 +103,7 @@
           class="d-flex gap-4"
           [routerLink]="'settings/view-profile/' + profileId"
           routerLinkActive="active"
+          (click)="closeSidebar()"
         >
           <fa-icon [icon]="['fas', 'gear']" class="font-20-px" />
           <span>View Profile</span>
@@ -237,6 +238,14 @@
       <!-- <span class="c-fonts py-6 mt-10 text-center"
         >Social Discussion on how to heal various ailments</span
       > -->
+    </div>
+  </ng-container>
+  <ng-container *ngIf="sharedService?.advertizementLink?.length">
+    <div class="mt-3">
+      <h6>Advertizement Link</h6>
+      <div *ngFor="let item of sharedService?.advertizementLink">
+        <app-post-meta-data-card [post]="item" />
+      </div>
     </div>
   </ng-container>
 </div>

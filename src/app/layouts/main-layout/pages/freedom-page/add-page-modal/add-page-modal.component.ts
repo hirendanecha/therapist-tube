@@ -6,6 +6,7 @@ import { debounceTime, forkJoin, fromEvent } from 'rxjs';
 import { Community } from 'src/app/@shared/constant/customer';
 import { CommunityService } from 'src/app/@shared/services/community.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
+import { SharedService } from 'src/app/@shared/services/shared.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { UploadFilesService } from 'src/app/@shared/services/upload-files.service';
 import { slugify } from 'src/app/@shared/utils/utils';
@@ -52,14 +53,21 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
   defaultCountry = 'US';
   allStateData: any;
   @ViewChild('zipCode') zipCode: ElementRef;
-
+  inputLinkValue1 = '';
+  inputLinkValue2 = '';
+  advertizement = {
+    communityId: null,
+    link1: null,
+    link2: null
+  }
   constructor(
     public activeModal: NgbActiveModal,
     private spinner: NgxSpinnerService,
     private communityService: CommunityService,
     private toastService: ToastService,
     private customerService: CustomerService,
-    private uploadService: UploadFilesService
+    private uploadService: UploadFilesService,
+    private sharedService: SharedService
   ) {
     this.userId = window.sessionStorage.user_id;
     this.profileId = localStorage.getItem('profileId');
@@ -90,8 +98,10 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
       console.log(this.data);
     }
   }
-
+  
   ngAfterViewInit(): void {
+    this.inputLinkValue1 = this.data?.link1 || null;
+    this.inputLinkValue2 = this.data?.link2 || null;
     fromEvent(this.zipCode.nativeElement, 'input')
       .pipe(debounceTime(1000))
       .subscribe((event) => {
@@ -188,6 +198,7 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
               this.spinner.hide();
               if (!res.error) {
                 this.submitted = true;
+                this.createAdvertizeMentLink(res.data);
                 this.createCommunityAdmin(res.data);
                 this.activeModal.close('success');
                 this.toastService.success('Therapists pages created successfully');
@@ -223,7 +234,45 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
                 this.spinner.hide();
               }
           });
+          if (this.data.link1 || this.data.link2) {
+            this.editAdvertizeMentLink(this.data.Id);
+          } else {
+            this.createAdvertizeMentLink(this.data.Id);
+          }
+          this.sharedService.advertizementLink = [];
       }
+    }
+  }
+
+  createAdvertizeMentLink(id) {
+    if (id && (this.advertizement.link1 || this.advertizement.link2)) {
+      this.advertizement.communityId = id
+      this.communityService.createAdvertizeMentLink(this.advertizement).subscribe({
+        next: (res => {
+          return;
+        }),
+        error: (err => {
+          console.log(err)
+        })
+      })
+    }
+  }
+
+  editAdvertizeMentLink(id) {
+    if (id && (this.advertizement.link1 || this.advertizement.link2)) {
+      const data = {
+        communityId: id,
+        link1: this.advertizement.link1 || null,
+        link2: this.advertizement.link2 || null
+      }
+      this.communityService.editAdvertizeMentLink(data).subscribe({
+        next: (res => {
+          return;
+        }),
+        error: (err => {
+          console.log(err)
+        })
+      })
     }
   }
 
@@ -367,6 +416,13 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
   //       }
   //     );
   // }
+
+  onTagUserInputChangeEvent(data: any): void {
+    this.advertizement.link1 = data?.meta?.url
+  }
+  onTagUserInputChangeEvent1(data): void {
+    this.advertizement.link2 = data?.meta?.url
+  }
 
   convertToUppercase(event: any) {
     const inputElement = event.target as HTMLInputElement;
