@@ -18,6 +18,7 @@ import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UploadFilesService } from 'src/app/@shared/services/upload-files.service';
 import { Router } from '@angular/router';
+import { SeoService } from 'src/app/@shared/services/seo.service';
 
 @Component({
   selector: 'app-add-community-modal',
@@ -25,7 +26,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-community-modal.component.scss'],
 })
 export class AddCommunityModalComponent implements OnInit, AfterViewInit {
-  @Input() title: string | undefined = 'Apply to be Therapists';
+  @Input() title: string | undefined = 'Therapist listing application';
   @Input() cancelButtonLabel: string | undefined = 'Cancel';
   @Input() confirmButtonLabel: string | undefined = 'Create';
   @Input() closeIcon: boolean | undefined;
@@ -81,10 +82,17 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     private toastService: ToastService,
     private customerService: CustomerService,
     private uploadService: UploadFilesService,
+    private seoService: SeoService,
     private router: Router
   ) {
     this.userId = window.sessionStorage.user_id;
     this.profileId = localStorage.getItem('profileId');
+    const data = {
+      title: 'TherapistTube List Therapists',
+      url: `${window.location.href}`,
+      description: '',
+    };
+    this.seoService.updateSeoMetaData(data);
   }
 
   ngOnInit(): void {

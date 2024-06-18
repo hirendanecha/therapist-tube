@@ -89,7 +89,7 @@
           required
           name="State"
           class="input-area w-100"
-          [(ngModel)]="selectedState"
+          formControlName="State"
         >
           <option [value]="item.state" *ngFor="let item of allStateData">
             {{ item.state }}
@@ -198,7 +198,7 @@
   </div>
   
   <div class="d-flex flex-column mt-4">
-    <h4>Emphasis of Practice</h4>
+    <h4>Therapist Emphasis</h4>
     <div class="container">
       <div class="row">
         <div *ngFor="let emphasis of practitionerEmphasis" class="col-md-6 col-lg-3">

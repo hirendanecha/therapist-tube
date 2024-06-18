@@ -1,4 +1,4 @@
-<ng-container *ngIf="!selectPractitionerPage">
+<!-- <ng-container *ngIf="!selectPractitionerPage">
   <div class="healing-registration-container">
     <h2 class="text-center">What do you want to do?</h2>
     <div class="d-flex justify-content-center mt-10">
@@ -39,10 +39,11 @@
       </div>
     </div>
   </div>
-</ng-container>
+</ng-container> -->
 
-<ng-container *ngIf="selectPractitionerPage">
-  <div class="d-flex justify-content-center mt-10">
+<!-- <ng-container *ngIf="selectPractitionerPage"> -->
+<ng-container>
+  <!-- <div class="d-flex justify-content-center mt-10">
     <div class="d-flex flex-column">
       <div class="form-check">
         <input
@@ -104,24 +105,23 @@
         </label>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="healing-sub-container">
-    <h2 class="text-center mt-10">
-      What emphasis are you interested in therapy:
-    </h2>
+    <h6 class="text-center mt-5 mt-sm-10">There are many types of therapists, each with different educational requirements and focuses.</h6>
+    <h2 class="text-center">What type of therapist are you looking for?</h2>
     <div class="d-flex justify-content-center mt-5">
       <div class="d-flex flex-wrap justify-content-center">
         <div *ngFor="let card of cards" class="card text-center">
           <div class="card-body">
-            <h4 class="card-title">{{ card.title }}</h4>
+            <h4 class="card-title">{{ card.name }}</h4>
             <p class="card-text">{{ card.description }}</p>
-            <button (click)="selectCard(card.id)">
+            <button (click)="selectCard(card.eId)">
               <a
                 class="btn"
-                [ngClass]="isSelected(card.id) ? 'btn-success' : 'cmn-btn'"
+                [ngClass]="isSelected(card.eId) ? 'btn-success' : 'cmn-btn'"
               >
-                {{ isSelected(card.id) ? "Selected" : "Select" }}</a
+                {{ isSelected(card.eId) ? "Selected" : "Select" }}</a
               >
             </button>
           </div>
@@ -130,7 +130,7 @@
     </div>
   </div>
   <div class="d-flex flex-column mt-6">
-    <h4>Discussion with a Therapist</h4>
+    <h4>Topics for discussion during your video call:</h4>
     <div class="container">
       <div class="row">
         <div *ngFor="let area of practitionerArea" class="col-md-6 col-lg-3">
@@ -144,7 +144,7 @@
                 (change)="onAreaboxChange($event, area)"
               />
               <div class="title-container">
-                <label class="form-check-label ms-2" for="modality{{ area.aId }}" [title]="area.name">
+                <label class="form-check-label ms-2 text-truncate" for="modality{{ area.aId }}" [title]="area.name">
                   {{ area.name }}
                 </label>
               </div>
@@ -155,7 +155,7 @@
     </div>
   </div>
   <div class="w-100 mt-5">
-    <button
+    <!-- <button
       *ngIf="!isFromHome"
       (click)="backPreview()"
       class="btn cmn-btn d-flex align-items-center float-start"
@@ -165,7 +165,7 @@
         class="c-pointer close-icon me-2"
         title="Back"
       />Back
-    </button>
+    </button> -->
     <button
       (click)="nextPageSearch()"
       class="btn cmn-btn d-flex align-items-center float-end"
