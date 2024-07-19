@@ -8,7 +8,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/@shared/services/auth.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { SharedService } from 'src/app/@shared/services/shared.service';
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
