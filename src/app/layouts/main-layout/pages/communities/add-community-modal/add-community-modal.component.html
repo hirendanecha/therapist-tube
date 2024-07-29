@@ -210,6 +210,7 @@
                 [value]="emphasis.eId"
                 id="modality{{ emphasis.eId }}"
                 (change)="onCheckboxChange($event, emphasis)"
+                [checked]="selectedValues.includes(emphasis.eId)"
               />
               <div class="title-container">
                 <label class="form-check-label ms-2" for="modality{{ emphasis.eId }}" [title]="emphasis.name">
@@ -235,6 +236,7 @@
                 [value]="area.aId"
                 id="modality{{ area.aId }}"
                 (change)="onAreaboxChange($event, area)"
+                [checked]="selectedAreaValues.includes(area.aId)"
               />
               <div class="title-container">
                 <label class="form-check-label ms-2" for="modality{{ area.aId }}" [title]="area.name">
