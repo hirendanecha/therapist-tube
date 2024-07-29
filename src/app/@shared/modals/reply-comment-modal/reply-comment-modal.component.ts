@@ -19,7 +19,8 @@ export class ReplyCommentModalComponent implements AfterViewInit {
   commentData: any = {
     file: null,
     url: '',
-    tags: []
+    tags: [],
+    meta: {}
   };
 
   commentMessageInputValue: string = ''
@@ -46,7 +47,7 @@ export class ReplyCommentModalComponent implements AfterViewInit {
       this.commentData.parentCommentId = this.data.parentCommentId
       this.commentData.postId = this.data.postId
       this.commentData.profileId = this.data.profileId
-      this.commentData['imageUrl'] = this.data?.imageUrl
+      this.commentData.imageUrl = this.data?.imageUrl
       this.changeDetectorRef.detectChanges();
     }
   }
@@ -55,8 +56,7 @@ export class ReplyCommentModalComponent implements AfterViewInit {
     const file = event.target?.files?.[0] || {};
     if (file.type.includes('image/')) {
       this.commentData['file'] = file;
-      this.selectedImage = URL.createObjectURL(file);
-    }
+      this.selectedImage = URL.createObjectURL(file);}
     else {
       this.toastService.danger(`sorry ${file.type} are not allowed!`)
     }
@@ -79,8 +79,55 @@ export class ReplyCommentModalComponent implements AfterViewInit {
   }
 
   onTagUserInputChangeEvent(data: any): void {
-    // console.log('comments-data', data)
-    this.commentData.comment = data?.html;
+    this.extractLargeImageFromContent(data.html)
     this.commentMessageTags = data?.tags;
+    this.commentData.meta = data?.meta;
+  }
+
+  extractLargeImageFromContent(content: string): void {
+    const contentContainer = document.createElement('div');
+    contentContainer.innerHTML = content;
+    const imgTag = contentContainer.querySelector('img');
+
+    if (imgTag) {
+      const imgTitle = imgTag.getAttribute('title');
+      const imgStyle = imgTag.getAttribute('style');
+      const imageGif = imgTag
+        .getAttribute('src')
+        .toLowerCase()
+        .endsWith('.gif');
+      if (!imgTitle && !imgStyle && !imageGif) {
+        const copyImage = imgTag.getAttribute('src');
+        const bytes = copyImage.length;
+        const megabytes = bytes / (1024 * 1024);
+        if (megabytes > 1) {
+          // this.commentData.comment = content.replace(copyImage, '');
+          let copyImageTag = '<img\\s*src\\s*=\\s*""\\s*alt\\s*="">'
+          this.commentData.comment = `<div>${content.replace(copyImage, '').replace(/\<br\>/ig, '').replace(new RegExp(copyImageTag, 'g'), '')}</div>`;
+          const base64Image = copyImage
+            .trim()
+            .replace(/^data:image\/\w+;base64,/, '');
+          try {
+            const binaryString = window.atob(base64Image);
+            const uint8Array = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+              uint8Array[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([uint8Array], { type: 'image/jpeg' });
+            const fileName = `copyImage-${new Date().getTime()}.jpg`;
+            const file = new File([blob], fileName, { type: 'image/jpeg' });
+            this.commentData['file'] = file;
+          } catch (error) {
+            console.error('Base64 decoding error:', error);
+          }
+        } else {
+          this.commentData.comment = content;
+        }
+      } else {
+        this.commentData.comment = content;
+      }
+    } else {
+      this.commentData.comment = content;
+    }
   }
 }
