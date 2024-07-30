@@ -1,9 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Inject,
+  Input,
   OnDestroy,
   OnInit,
+  Output,
   PLATFORM_ID,
   Renderer2,
   ViewChild,
@@ -25,19 +28,16 @@ import { environment } from 'src/environments/environment';
 import { SeoService } from 'src/app/@shared/services/seo.service';
 import { AddCommunityModalComponent } from '../communities/add-community-modal/add-community-modal.component';
 import { AddFreedomPageComponent } from '../freedom-page/add-page-modal/add-page-modal.component';
-// import { MetafrenzyService } from 'ngx-metafrenzy';
 import { isPlatformBrowser } from '@angular/common';
 import { Howl } from 'howler';
 import { EditPostModalComponent } from 'src/app/@shared/modals/edit-post-modal/edit-post-modal.component';
-import { AppointmentModalComponent } from 'src/app/@shared/modals/appointment-modal/appointment-modal.component';
-
 import * as moment from 'moment';
 import { AppointmentsService } from 'src/app/@shared/services/appointment.service';
+import { AppointmentModalComponent } from 'src/app/@shared/modals/appointment-modal/appointment-modal.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  // providers: [MetafrenzyService]
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   postMessageInputValue: string = '';
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   notificationId: number;
   buttonClicked = false;
   originalFavicon: HTMLLinkElement;
-  notificationSoundOct = '';
+  notificationSoundOct = ''
 
   appointmentList = [];
 
@@ -175,12 +175,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.sharedService.advertizementLink = [];
         }
-
         this.isNavigationEnd = true;
       });
       const data = {
         title: 'TherapistTube',
-        url: `${window.location.href}`,
+        url: `${location.href}`,
       };
       this.seoService.updateSeoMetaData(data);
     }
@@ -216,7 +215,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.socketService.socket?.emit('join', { room: this.profileId });
     this.socketService.socket?.on('notification', (data: any) => {
       if (data) {
-        console.log('new-notification', data);
         this.notificationId = data.id;
         this.sharedService.isNotify = true;
         this.originalFavicon.href = '/assets/images/icon-unread.jpg';
@@ -251,8 +249,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (isRead === 'N') {
       this.sharedService.isNotify = true;
     }
+    this.socketService.socket?.on(
+      'new-post-added',
+      (res: any) => {
+        this.spinner.hide();
+        this.resetPost();
+      },
+      (error: any) => {
+        this.spinner.hide();
+        console.log(error);
+      }
+    );
   }
-
 
   ngOnDestroy(): void { }
 
@@ -301,20 +309,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
               description: details.CommunityDescription,
               image: details?.coverImg,
             };
-            // this.metafrenzyService.setTitle(data.title);
-            // this.metafrenzyService.setMetaTag('og:title', data.title);
-            // this.metafrenzyService.setMetaTag('og:description', data.description);
-            // this.metafrenzyService.setMetaTag('og:url', data.url);
-            // this.metafrenzyService.setMetaTag('og:image', data.image);
-            // this.metafrenzyService.setMetaTag("og:site_name", 'Freedom.Buzz');
-            // this.metafrenzyService.setOpenGraph({
-            //   title: data.title,
-            //   //description: post.postToProfileIdName === '' ? post.profileName: post.postToProfileIdName,
-            //   description: data.description,
-            //   url: data.url,
-            //   image: data.image,
-            //   site_name: 'Freedom.Buzz'
-            // });
             this.seoService.updateSeoMetaData(data);
 
             if (details?.memberList?.length > 0) {
@@ -414,7 +408,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.postData?.imageUrl ||
       this.postData?.pdfUrl
     ) {
-      if (this.postData?.meta?.metalink || this.postData?.metalink) {
+      if (!(this.postData?.meta?.metalink || this.postData?.metalink)) {
         this.postData.metalink = null;
         this.postData.title = null;
         this.postData.metaimage = null;
@@ -655,7 +649,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
   openUploadEditPostModal(post: any = {}): void {
     const modalRef = this.modalService.open(EditPostModalComponent, {
       centered: true, backdrop: 'static',
@@ -804,9 +797,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (res === 'success') {
         const data = {
           appointmentId: obj.id,
-          practitionerProfileId: obj.practitionerProfileId,
+          therapistProfileId: obj.therapistProfileId,
           profileId: obj.profileId,
-          practitionerName: obj.practitionerName,
+          therapistName: obj.therapistName,
         };
         this.getCancelAppoinments(data);
       }

@@ -26,7 +26,7 @@ export class NotificationsComponent {
   ) { 
     const data = {
       title: 'TherapistTube Notification',
-      url: `${window.location.href}`,
+      url: `${location.href}`,
       description: '',
     };
     this.seoService.updateSeoMetaData(data);

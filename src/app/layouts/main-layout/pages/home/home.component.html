@@ -570,7 +570,7 @@
 </ng-container>
 
 <ng-container *ngIf="activeCommunityTab === 3">
-  <ng-container *ngIf="appointmentList?.length; else noData">
+  <ng-container *ngIf="appointmentList.length; else noData">
     <div class="card rounded shadow border-0 appointment-table">
       <div class="card-body rounded">
         <h5 class="m-0">Appointment Details</h5>
@@ -579,7 +579,7 @@
             <thead>
               <tr class="text-center">
                 <th>Profile</th>
-                <th>Patient Name</th>
+                <th>Agent Name</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Status</th>
@@ -642,7 +642,7 @@
               <tr class="text-center">
                 <th>#</th>
                 <th>Profile</th>
-                <th>Patient Name</th>
+                <th>Therapist Name</th>
                 <th>Purchase Date</th>
                 <th>Amount</th>
                 <th>Status</th>

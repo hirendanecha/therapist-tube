@@ -20,7 +20,7 @@ export class SeeFirstUserComponent implements OnInit {
   ) {
     const data = {
       title: 'TherapistTube See First User',
-      url: `${window.location.href}`,
+      url: `${location.href}`,
       description: '',
     };
     this.seoService.updateSeoMetaData(data);

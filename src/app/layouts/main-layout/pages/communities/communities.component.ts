@@ -38,7 +38,7 @@ export class CommunitiesComponent {
     // this.getCommunities();
     const data = {
       title: 'TherapistTube Therapists',
-      url: `${window.location.href}`,
+      url: `${location.href}`,
       description: '',
     };
     this.seoService.updateSeoMetaData(data);
